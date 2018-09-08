@@ -1,30 +1,27 @@
 from app import app
 from flask import render_template
 
+artists = ["Kindo", "SnarkyPuppy", "Brasstracks", "Polyphia"]
+
 @app.route('/')
 @app.route('/index')
 def index():
 
-    user = {'username': 'Fernando'}
+    return render_template('index.html', artists=artists)
 
-    posts = [
-        {
-            'author': {'username': 'Fernando'},
-            'body': 'Beautiful day in Ithaca!'
-        },
-        {
-            'author': {'username': 'Lee'},
-            'body': 'What should I have for dinner?'
-        }
-    ]
+@app.route('/Kindo')
+def kindo():
 
-    return render_template('index.html', title='Home', user=user, posts=posts)
+    name = "Kindo"
+    bio = "Kindo is an American rock band " \
+          "originating from Buffalo, New York, currently " \
+          "based out of New York City.They produce " \
+          "and releasetheir music independently."
+    hometown = "Buffalo, New York"
+    upcomingEvents = "No Upcoming Shows"
 
-@app.route('/hidden')
-def hidden():
+    return render_template('kindo.html', artists=artists, name=name, bio=bio, hometown=hometown, upcomingEvents=upcomingEvents)
 
-    return render_template('index.html', title='Oh No', secret="Hello World!")
-
-
-
-
+@app.route('/create_new_artist')
+def create_new_artist():
+    return render_template('create_new_artist.html', artists=artists)

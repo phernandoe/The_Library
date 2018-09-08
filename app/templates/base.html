@@ -2,16 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% if title %}
-        <title>{{ title }} - Microblog</title>
+    {% if artist %}
+        <title>{{ artist }}'s Page</title>
     {% else %}
-        <title>Welcome to Microblog!</title>
+        <title>The Library</title>
     {% endif %}
 </head>
 <body>
-    <div>Microblog:
+    <div>
+        <h3>The Library:</h3>
         <a href="/index">Home</a>
-        <a style="color:White"href="/hidden">Hidden</a>
+        {% for artist in artists %}
+            <a href="/Kindo">{{ artist }}</a>
+        {% endfor %}
+        <a href="/create_new_artist">Create New Artist</a>
     </div>
     <hr>
     {%  block content %}{% endblock %}
