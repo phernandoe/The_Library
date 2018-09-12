@@ -7,7 +7,9 @@ artists = ["Kindo", "SnarkyPuppy", "Brasstracks", "Polyphia"]
 @app.route('/index')
 def index():
 
-    return render_template('index.html', artists=artists)
+    intro = "A Library, but instead of a collection of books its a collection of music artists. Use the navigation bar at the top to discover newartists along with information about them. Have fun!"
+
+    return render_template('index.html', artists=artists, intro=intro)
 
 @app.route('/Kindo')
 def kindo():
