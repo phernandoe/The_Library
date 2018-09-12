@@ -1,2 +1,2 @@
 # music_site
-Site containing artists across various genres.
+Site containing information about artists across various genres.
