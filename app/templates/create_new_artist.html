@@ -10,8 +10,8 @@
             {{ form.name.label }}<br>
             {{ form.name(size=50) }}<br>
 
-            {% for error in form.name.errors %}}
-                <span style="color: red;">[{{ ERROR }}]</span>
+            {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
 
@@ -20,7 +20,7 @@
             {{ form.hometown(size=25) }}<br>
 
             {% for error in form.hometown.errors %}}
-                <span style="color: red;">[{{ ERROR }}]</span>
+                <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
 
@@ -29,7 +29,7 @@
             {{ form.description(size=50) }}<br>
 
             {% for error in form.description.errors %}}
-                <span style="color: red;">[{{ ERROR }}]</span>
+                <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
 

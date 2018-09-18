@@ -4,4 +4,9 @@
 
     <p>{{ intro }}</p>
 
+    {% for artist in artists %}
+        <a href="/artist">{{ artist }}</a><br>
+    {% endfor %}
+
+
 {% endblock %}

@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2> {{ artistsInfo["artist"]["name"] }} </h2>
 
-    <p><b>Bio:</b> {{ artistsInfo["artist"]["bio"] }}</p>
-
-    <p><b>Hometown:</b> {{ artistsInfo["artist"]["hometown"] }}</p>
-
-    <p><b>Upcoming Events:</b> {{ artistsInfo["artist"]["upcomingEvents"] }}</p>
+    <h2> {{ artistsInfo["name"] }} </h2>
+    <p><b>Bio:</b> {{ artistsInfo["bio"] }}</p>
+    <p><b>Hometown:</b> {{ artistsInfo["hometown"] }}</p>
+    <p><b>Upcoming Events:</b> {{ artistsInfo["upcomingEvents"] }}</p>
 
 {% endblock %}
