@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% if name %}
-        <title>{{ name }}'s Page</title>
+    {% if artist %}
+        <title>The {{ artist }} Entry</title>
     {% else %}
         <title>The Library</title>
     {% endif %}
@@ -13,11 +13,20 @@
         <h3>The Library:</h3>
         <a href="/index">Home</a>
         {% for artist in artists %}
-            <a href="/Kindo">{{ artist }}</a>
+            <a href="/artist">{{ artist }}</a>
         {% endfor %}
         <a href="/create_new_artist">Create New Artist</a>
     </div>
-    <hr>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
     {%  block content %}{% endblock %}
 </body>
 </html>
