@@ -2,9 +2,24 @@
 
 {% block content %}
 
-    <h2> {{ artistsInfo["name"] }} </h2>
-    <p><b>Bio:</b> {{ artistsInfo["bio"] }}</p>
-    <p><b>Hometown:</b> {{ artistsInfo["hometown"] }}</p>
-    <p><b>Upcoming Events:</b> {{ artistsInfo["upcomingEvents"] }}</p>
+    <h2> {{ artist.name }} </h2>
+    <p><b>Genre:</b> {{ artist.genre }}</p>
+    <p><b>Upcoming Events:</b>
+
+    <ul>
+       {% for artistEvent in artistEvents %}
+           {% for event in event_list %}
+                {% if artistEvent.eventID == event.id %}
+                   {% for venue in venue_list %}
+                        {% if event.venueID == venue.id %}
+                            <li><b>{{ event.name }}</b> at <b>{{ venue.name }}</b> on <b>{{event.time.strftime('%A, %b %d %Y')}}</b>.</li>
+                        {% endif %}
+                   {% endfor %}
+                {% endif %}
+           {% endfor %}
+       {% endfor %}
+    </ul>
+
+    </p>
 
 {% endblock %}

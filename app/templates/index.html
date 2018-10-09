@@ -5,7 +5,7 @@
     <p>{{ message }}</p>
 
     {% for artist in artists %}
-        <a href="/artist">{{ artist }}</a><br>
+         <a href="{{ url_for('artist', name=artist.name) }}">{{ artist.name }}</a><br>
     {% endfor %}
 
 

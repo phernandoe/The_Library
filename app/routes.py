@@ -4,8 +4,7 @@ from flask import render_template, flash, redirect, url_for
 from app.create_new_artist import createNewArtist
 from app.models import Artist, Event, Venue, ArtistToEvent
 
-artists = ["Kindo", "SnarkyPuppy", "Brasstracks", "Polyphia"]
-
+artists = Artist.query
 
 @app.route('/')
 @app.route('/index')
@@ -16,31 +15,26 @@ def index():
     return render_template('index.html', artists=artists, message=intro)
 
 
-@app.route('/artist')
-def artist():
-    artistInfo = {"name": "Kindo",
-                  "bio": "Kindo is an American rock band "
-                         "originating from Buffalo, New York, currently "
-                         "based out of New York City.They produce "
-                         "and releasetheir music independently.",
-                  "hometown": "Buffalo, New York",
-                  "upcomingEvents": "No Upcoming Shows"}
+@app.route('/artist/<name>')
+def artist(name):
+    artist = Artist.query.filter_by(name=name).first_or_404()
+    venues = Venue.query
+    events = Event.query
+    a2e = ArtistToEvent.query.filter_by(artistID=artist.id).all()
 
-    return render_template('artist.html', artistsInfo=artistInfo, artists=artists)
+    return render_template('artist.html', artist=artist, venue_list=venues, event_list=events, artistEvents=a2e)
 
 
 @app.route('/create_new_artist', methods=['GET', 'POST'])
 def create_new_artist():
     form = createNewArtist()
-    artistInfo = {
-        "name": form.name.data,
-        "hometown": form.hometown.data,
-        "bio": form.description.data
-    }
 
     if form.validate_on_submit():
+        newArtist = Artist(name=form.name.data, genre=form.genre.data)
+        db.session.add(newArtist)
+        db.session.commit()
         flash('{} has been added to the library'.format(form.name.data))
-        return render_template('artist.html', artistsInfo=artistInfo)
+        return render_template('artist.html', artist=newArtist)
 
     return render_template('create_new_artist.html', artists=artists, title='Create new artist', form=form)
 
@@ -101,6 +95,4 @@ def reset_db():
     db.session.flush()
     db.session.commit()
 
-    ar = Artist.query.filter_by(genre="Rock").all()
-
-    return render_template('index.html', artists=artists, message=ar)
+    return render_template('index.html', artists=artists)

@@ -16,6 +16,16 @@
         </p>
 
         <p>
+            {{ form.genre.label }}<br>
+            {{ form.genre(size=30) }}<br>
+
+            {% for error in form.genre.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+
+        <p>
             {{ form.hometown.label }}<br>
             {{ form.hometown(size=25) }}<br>
 
