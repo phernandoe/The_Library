@@ -13,9 +13,6 @@ class createNewArtist(FlaskForm):
     submit = SubmitField('Add Artist')
 
     def validate_name(self, name):
-
-        print("HERE")
-
         artist = Artist.query.filter_by(name=name.data).first()
         if artist is not None:
             raise ValidationError("Artist has already been registered")

@@ -1,7 +1,9 @@
 create table Artist (
  id integer primary key autoincrement,
  name varchar(64) not null,
- genre varchar(64) not null
+ genre varchar(64) not null,
+ hometown varchar(64) not null,
+ description varchar(128) not null
 );
 
 create table Venue (

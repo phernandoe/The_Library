@@ -5,6 +5,8 @@ class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     genre = db.Column(db.String(64), index=True)
+    hometown = db.Column(db.String(64))
+    description = db.Column(db.String(128), index=True)
     events = db.relationship("ArtistToEvent", back_populates="artist")
 
     def __repr__(self):

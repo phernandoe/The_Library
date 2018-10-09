@@ -30,7 +30,7 @@ def create_new_artist():
     form = createNewArtist()
 
     if form.validate_on_submit():
-        newArtist = Artist(name=form.name.data, genre=form.genre.data)
+        newArtist = Artist(name=form.name.data, genre=form.genre.data, hometown=form.hometown.data, description=form.description.data)
         db.session.add(newArtist)
         db.session.commit()
         flash('{} has been added to the library'.format(form.name.data))
@@ -48,13 +48,13 @@ def reset_db():
         db.session.execute(table.delete())
     db.session.commit()
 
-    kindo = Artist(name="Kindo", genre="Rock")
+    kindo = Artist(name="Kindo", genre="Rock", hometown="Buffalo, NY", description="Very cool indie band")
     db.session.add(kindo)
 
-    brasstracks = Artist(name="Brasstracks", genre="Jazz")
+    brasstracks = Artist(name="Brasstracks", genre="Jazz", hometown="New York, NY", description="Cool brass group")
     db.session.add(brasstracks)
 
-    polyphia = Artist(name="Polyphia", genre="Rock")
+    polyphia = Artist(name="Polyphia", genre="Rock", hometown="Dallas, TX", description="Best metal band ever")
     db.session.add(polyphia)
     db.session.flush()
 
