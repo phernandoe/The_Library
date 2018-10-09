@@ -54,28 +54,53 @@ def reset_db():
         db.session.execute(table.delete())
     db.session.commit()
 
-    # artists = [{"Kindo", "Rock"}, {"Brasstracks", "Jazz"}, {"Polyphia", "Rock"}]
-    # venues = [{"The Haunt", "Ithaca, NY", 300}, {"Kilpatricks", "Ithaca, NY", 100}, {"Lost Horizon", "Syracuse, NY", 250}]
-    # events = [{"Grand Slam", "01/01/2018", 1}, {"Dunk", "05/05/2018", 2}, {"Buzzer", "09/23/2018", 1}]
-    # artistToEvents = [{1, 1}, {2, 1}, {3, 2}, {2, 2}, {3, 3}]
+    kindo = Artist(name="Kindo", genre="Rock")
+    db.session.add(kindo)
 
-    a = Artist(name="Blah", genre="Punk")
-    db.session.add(a)
+    brasstracks = Artist(name="Brasstracks", genre="Jazz")
+    db.session.add(brasstracks)
+
+    polyphia = Artist(name="Polyphia", genre="Rock")
+    db.session.add(polyphia)
     db.session.flush()
 
-    v = Venue(name="The Haunt", location="Ithaca, NY", capacity=300)
-    db.session.add(v)
+    theHaunt = Venue(name="The Haunt", location="Ithaca, NY", capacity=200)
+    db.session.add(theHaunt)
+
+    kilpatricks = Venue(name="Kilpatricks", location="Ithaca, NY", capacity=100)
+    db.session.add(kilpatricks)
+
+    lostHorizon = Venue(name="Lost Horizon", location="Syracuse, NY", capacity=300)
+    db.session.add(lostHorizon)
     db.session.flush()
 
-    e = Event(name="Dunk", time=datetime.utcnow(), venueID=v.id)
-    db.session.add(e)
+    dunk = Event(name="Dunk", time=datetime.utcnow(), venueID=lostHorizon.id)
+    db.session.add(dunk)
+
+    grandSlam = Event(name="Grand Slam", time=datetime.utcnow(), venueID=lostHorizon.id)
+    db.session.add(grandSlam)
+
+    buzzer = Event(name="Buzzer", time=datetime.utcnow(), venueID=theHaunt.id)
+    db.session.add(buzzer)
     db.session.flush()
 
-    ae = ArtistToEvent(artistID=a.id, eventID=e.id)
-    db.session.add(ae)
+    k2d = ArtistToEvent(artistID=kindo.id, eventID=dunk.id)
+    db.session.add(k2d)
+
+    b2d = ArtistToEvent(artistID=brasstracks.id, eventID=dunk.id)
+    db.session.add(b2d)
+
+    p2g = ArtistToEvent(artistID=polyphia.id, eventID=grandSlam.id)
+    db.session.add(p2g)
+
+    b2g = ArtistToEvent(artistID=brasstracks.id, eventID=grandSlam.id)
+    db.session.add(b2g)
+
+    p2b = ArtistToEvent(artistID=polyphia.id, eventID=buzzer.id)
+    db.session.add(p2b)
     db.session.flush()
     db.session.commit()
 
-    ar = Artist.query.filter_by(name="Blah").first_or_404()
+    ar = Artist.query.filter_by(genre="Rock").all()
 
     return render_template('index.html', artists=artists, message=ar)
