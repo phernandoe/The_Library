@@ -19,7 +19,7 @@ create table Event (
  	foreign key (venueID) references Venue(id)
 );
 
-create table ArtistToEvent
+create table ArtistToEvent (
 	id integer primary key autoincrement,
  	artistID integer not null,
 	eventID  integer not null,

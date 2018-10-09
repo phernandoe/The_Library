@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from app import app, db
 from flask import render_template, flash, redirect, url_for
 from app.create_new_artist import createNewArtist
@@ -59,15 +59,21 @@ def reset_db():
     # events = [{"Grand Slam", "01/01/2018", 1}, {"Dunk", "05/05/2018", 2}, {"Buzzer", "09/23/2018", 1}]
     # artistToEvents = [{1, 1}, {2, 1}, {3, 2}, {2, 2}, {3, 3}]
 
-    a = Artist(id = 1, name="Blah", genre="Punk")
-    v = Venue(id = 1, name="The Haunt", location="Ithaca, NY", capacity=300)
-    e = Event(id=1, name="Dunk", time=datetime.datetime.utcnow(), venueID=1)
-    ae = ArtistToEvent(id=1, artist_id=a.id, event_id=e.id, artist=a, event=e)
-
+    a = Artist(name="Blah", genre="Punk")
     db.session.add(a)
+    db.session.flush()
+
+    v = Venue(name="The Haunt", location="Ithaca, NY", capacity=300)
     db.session.add(v)
+    db.session.flush()
+
+    e = Event(name="Dunk", time=datetime.utcnow(), venueID=v.id)
     db.session.add(e)
+    db.session.flush()
+
+    ae = ArtistToEvent(artistID=a.id, eventID=e.id)
     db.session.add(ae)
+    db.session.flush()
     db.session.commit()
 
     ar = Artist.query.filter_by(name="Blah").first_or_404()
