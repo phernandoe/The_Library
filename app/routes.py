@@ -1,13 +1,17 @@
 from datetime import datetime
+
+from flask_login import login_required, current_user, logout_user, login_user
+from werkzeug.urls import url_parse
 from app import app, db
-from flask import render_template, flash, redirect, url_for
-from app.create_new_artist import createNewArtist
-from app.models import Artist, Event, Venue, ArtistToEvent
+from flask import render_template, flash, redirect, url_for, request
+from app.forms import createNewArtist, RegistrationForm, LoginForm
+from app.models import Artist, Event, Venue, ArtistToEvent, User
 
 artists = Artist.query
 
 @app.route('/')
 @app.route('/index')
+@login_required
 def index():
     intro = "A Library, but instead of a collection of books its a collection of music artists. Use the navigation " \
             "bar at the top to discover new artists along with information about them. Have fun! "
@@ -37,6 +41,7 @@ def artist(name):
 
 
 @app.route('/create_new_artist', methods=['GET', 'POST'])
+@login_required
 def create_new_artist():
     form = createNewArtist()
 
@@ -48,6 +53,48 @@ def create_new_artist():
         return render_template('artist.html', artist=newArtist)
 
     return render_template('create_new_artist.html', artists=artists, title='Create new artist', form=form)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('login'))
+        login_user(user, remember=form.remember_me.data)
+        next_page = request.args.get('next')
+
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('index')
+        return redirect(next_page)
+
+    return render_template('login.html', title='Sign In', form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
 
 @app.route('/reset_db')
 def reset_db():
@@ -104,6 +151,11 @@ def reset_db():
     p2b = ArtistToEvent(artistID=polyphia.id, eventID=buzzer.id)
     db.session.add(p2b)
     db.session.flush()
+
+    user = User(username="Fernando", email="fernando@something.com")
+    user.set_password("123")
+    db.session.add(user)
+
     db.session.commit()
 
     return render_template('index.html', artists=artists)

@@ -28,3 +28,10 @@ create table ArtistToEvent (
 	foreign key (artistID) references Artist(id),
 	foreign key (eventID) references Event(id)
 );
+
+create table User (
+	id integer primary key autoincrement,
+	username varchar(64) not null,
+	email varchar(64) not null,
+	password_hash varchar(128) not null
+);

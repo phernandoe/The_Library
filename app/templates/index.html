@@ -2,6 +2,10 @@
 
 {% block content %}
 
+    {% if current_user %}
+    <h2>Welcome, {{ current_user.username }}</h2>
+    {% endif %}
+
     <p>{{ message }}</p>
 
     {% for artist in artists %}
