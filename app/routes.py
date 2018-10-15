@@ -4,7 +4,7 @@ from flask_login import login_required, current_user, logout_user, login_user
 from werkzeug.urls import url_parse
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import createNewArtist, RegistrationForm, LoginForm
+from app.forms import createNewArtist, RegistrationForm, LoginForm, createNewVenue
 from app.models import Artist, Event, Venue, ArtistToEvent, User
 
 artists = Artist.query
@@ -53,6 +53,21 @@ def create_new_artist():
         return render_template('artist.html', artist=newArtist)
 
     return render_template('create_new_artist.html', artists=artists, title='Create new artist', form=form)
+
+@app.route('/create_new_venue', methods=['GET', 'POST'])
+@login_required
+def create_new_venue():
+    form = createNewVenue()
+
+    if form.validate_on_submit():
+        newVenue = Venue(name=form.name.data, location=form.location.data, capacity=form.capacity.data)
+        db.session.add(newVenue)
+        db.session.commit()
+        flash('{} has been added to the library'.format(form.name.data))
+        return redirect(url_for('index'))
+
+    return render_template('create_new_venue.html', artists=artists, title='Create new venue', form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
