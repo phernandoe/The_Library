@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, PasswordField, BooleanField, IntegerField
+from wtforms import StringField, SubmitField, TextAreaField, PasswordField, BooleanField, IntegerField, SelectField, SelectMultipleField
+from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
-from app.models import Artist, User, Venue
+from app.models import Artist, User, Venue, Event
 
 class createNewArtist(FlaskForm):
     name = StringField('Name', validators=[DataRequired("No name provided")])
@@ -27,6 +28,25 @@ class createNewVenue(FlaskForm):
         venue = Venue.query.filter_by(name=name.data).first()
         if venue is not None:
             raise ValidationError("Venue already exists")
+
+class createNewEvent(FlaskForm):
+    venue_list = Venue.query
+    venueDict = {}
+
+    for venue in venue_list:
+        venueDict[venue.name] = venue
+
+    name = StringField('Name', validators=[DataRequired("No name provided")])
+    date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired("No time provided")])
+    venue = SelectField('Venue', choices=[])
+    artists = SelectMultipleField('Artists', choices=[])
+
+    submit = SubmitField('Add Event')
+
+    def validate_name(self, name):
+        event = Event.query.filter_by(name=name.data).first()
+        if event is not None:
+            raise ValidationError("Event already exists")
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

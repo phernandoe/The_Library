@@ -4,7 +4,7 @@ from flask_login import login_required, current_user, logout_user, login_user
 from werkzeug.urls import url_parse
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import createNewArtist, RegistrationForm, LoginForm, createNewVenue
+from app.forms import createNewArtist, RegistrationForm, LoginForm, createNewVenue, createNewEvent
 from app.models import Artist, Event, Venue, ArtistToEvent, User
 
 artists = Artist.query
@@ -68,6 +68,18 @@ def create_new_venue():
 
     return render_template('create_new_venue.html', artists=artists, title='Create new venue', form=form)
 
+@app.route('/create_new_event', methods=['GET', 'POST'])
+@login_required
+def create_new_event():
+    form = createNewEvent()
+    form.venue.choices = [(venue.id, venue.name)for venue in Venue.query]
+    form.artists.choices = [(artist.id, artist.name)for artist in artists]
+
+    if form.validate_on_submit():
+        flash('{} has been added to the library'.format(form.name.data))
+        return redirect(url_for('index'))
+
+    return render_template('create_new_event.html', artists=artists, title='Create new event', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
