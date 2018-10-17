@@ -63,7 +63,7 @@ def create_new_venue():
         newVenue = Venue(name=form.name.data, location=form.location.data, capacity=form.capacity.data)
         db.session.add(newVenue)
         db.session.commit()
-        flash('{} has been added to the library'.format(form.name.data))
+        flash('Venue {} has been added to the library'.format(form.name.data))
         return redirect(url_for('index'))
 
     return render_template('create_new_venue.html', artists=artists, title='Create new venue', form=form)
@@ -73,10 +73,22 @@ def create_new_venue():
 def create_new_event():
     form = createNewEvent()
     form.venue.choices = [(venue.id, venue.name)for venue in Venue.query]
-    form.artists.choices = [(artist.id, artist.name)for artist in artists]
+    form.artists.choices = [(a.id, a.name)for a in artists]
 
     if form.validate_on_submit():
-        flash('{} has been added to the library'.format(form.name.data))
+        venue = Venue.query.filter_by(id=form.venue.data).first()
+        newEvent = Event(name=form.name.data, time=form.date.data, venueID=venue.id)
+        db.session.add(newEvent)
+        db.session.flush()
+
+        for a in form.artists.getList(artists):
+
+            a2e = ArtistToEvent(artistID=a.data, eventID=newEvent.id)
+            db.session.add(a2e)
+            db.session.flush()
+
+        db.session.commit()
+        flash('Event {} has been added to the library'.format(form.name.data))
         return redirect(url_for('index'))
 
     return render_template('create_new_event.html', artists=artists, title='Create new event', form=form)

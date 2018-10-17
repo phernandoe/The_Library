@@ -30,16 +30,10 @@ class createNewVenue(FlaskForm):
             raise ValidationError("Venue already exists")
 
 class createNewEvent(FlaskForm):
-    venue_list = Venue.query
-    venueDict = {}
-
-    for venue in venue_list:
-        venueDict[venue.name] = venue
-
     name = StringField('Name', validators=[DataRequired("No name provided")])
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired("No time provided")])
-    venue = SelectField('Venue', choices=[])
-    artists = SelectMultipleField('Artists', choices=[])
+    venue = SelectField('Venue', choices=[], coerce=int)
+    artists = SelectMultipleField('Artists', choices=[], coerce=int)
 
     submit = SubmitField('Add Event')
 
