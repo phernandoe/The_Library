@@ -81,11 +81,11 @@ def create_new_event():
         db.session.add(newEvent)
         db.session.flush()
 
-        for a in form.artists.getList(artists):
-
-            a2e = ArtistToEvent(artistID=a.data, eventID=newEvent.id)
-            db.session.add(a2e)
-            db.session.flush()
+        for a in form.artists:
+            if a.checked:
+                a2e = ArtistToEvent(artistID=a.data, eventID=newEvent.id)
+                db.session.add(a2e)
+                db.session.flush()
 
         db.session.commit()
         flash('Event {} has been added to the library'.format(form.name.data))
