@@ -18,13 +18,6 @@ def index():
 
     return render_template('index.html', artists=artists, message=intro)
 
-
-@app.route('/lost')
-def lost():
-    message = "Hmm.. that artist does not currently exist in our records. Try creating a new artist page for them with the link above"
-
-    return render_template('index.html', artists=artists, message=message)
-
 @app.route('/artist/<name>')
 def artist(name):
     artist = Artist.query.filter_by(name=name).first()
