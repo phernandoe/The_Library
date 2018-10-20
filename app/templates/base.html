@@ -1,39 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    {% if artist %}
-        <title>The {{ artist.name }} Entry</title>
-    {% else %}
-        <title>The Library</title>
-    {% endif %}
-</head>
-<body>
-    <div>
-        <h3>The Library:</h3>
-        <a href="/index">Home</a>
+{% extends 'bootstrap/base.html' %}
 
-        {% if current_user.is_anonymous %}
-        <a href="{{ url_for('login') }}">Login</a>
-        {% else %}
-        <a href="{{ url_for('logout') }}">Logout</a>
-        {% endif %}
+{% block title %}
+    {% if artist %} The {{ artist.name }} Entry{% else %} The Library {% endif %}
+{% endblock %}
 
-        <a href="/create_new_venue">Create New Venue</a>
-        <a href="/create_new_artist">Create New Artist</a>
-        <a href="/create_new_event">Create New Event</a>
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{{ url_for('index') }}">The Library</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="{{ url_for('create_new_venue') }}">Create New Venue</a>
+                <a class="nav-item nav-link" href="{{ url_for('create_new_artist') }}">Create New Artist</a>
+                <a class="nav-item nav-link" href="{{ url_for('create_new_event') }}">Create New Event</a>
+                {% if current_user.is_anonymous %}
+                    <a class="nav-item nav-link"href="{{ url_for('login') }}">Login</a>
+                {% else %}
+                    <a class="nav-item nav-link"href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
 
-    </div>
+{% endblock %}
 
+{%  block content %}
+    <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul>
             {% for message in messages %}
-            <li>{{ message }}</li>
+                <div class="alert alert-info" role="alert">{{ message }}</div>
             {% endfor %}
-        </ul>
         {% endif %}
         {% endwith %}
-    {%  block content %}{% endblock %}
-</body>
-</html>
+
+        {% block app_content %}{% endblock %}
+    </div>
+
+{% endblock %}
