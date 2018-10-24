@@ -131,7 +131,7 @@ def register():
 @app.route('/reset_db')
 def reset_db():
 
-    flash("Resetting database: existing data will be replaced with default data")
+    flash("Resetting database: existing Artist, Event, Venue and Users will be replaced with dafault values")
     meta = db.metadata
     for table in reversed(meta.sorted_tables):
         print('Clear table {}'.format(table))

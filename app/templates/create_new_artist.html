@@ -1,49 +1,38 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
 
 {% block app_content %}
     <h1 style="display: flex; justify-content: center;">Give us new music!</h1>
 
-    <form action="" method="post" novalidate>
+    <form class="form form-horizontal" action="" method="post" role="form" novalidate>
         {{ form.hidden_tag() }}
 
-        <p>
-            {{ form.name.label }}<br>
-            {{ form.name(size=50) }}<br>
+        {{ wtf.form_field(form.name) }}
 
-            {% for error in form.name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
 
-        <p>
-            {{ form.genre.label }}<br>
-            {{ form.genre(size=30) }}<br>
+        {{ wtf.form_field(form.genre) }}
 
-            {% for error in form.genre.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        {% for error in form.genre.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
 
 
-        <p>
-            {{ form.hometown.label }}<br>
-            {{ form.hometown(size=25) }}<br>
+        {{ wtf.form_field(form.hometown) }}
 
-            {% for error in form.hometown.errors %}}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        {% for error in form.hometown.errors %}}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
 
-        <p>
-            {{ form.description.label }}<br>
-            {{ form.description(size=50) }}<br>
+        {{ wtf.form_field(form.description) }}
 
-            {% for error in form.description.errors %}}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        {% for error in form.description.errors %}}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
 
-        <p>{{ form.submit() }}</p>
+        {{ wtf.form_field(form.submit) }}
 
     </form>
 {% endblock %}

@@ -1,40 +1,32 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
 
 {% block app_content %}
     <h1 style="display: flex; justify-content: center;">Add a Venue!</h1>
 
-    <form action="" method="post" novalidate>
+    <form class="form form-horizontal" action="" method="post" role="form" novalidate>
         {{ form.hidden_tag() }}
 
-        <p>
-            {{ form.name.label }}<br>
-            {{ form.name(size=64) }}<br>
+        {{ wtf.form_field(form.name) }}
 
-            {% for error in form.name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        {% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
 
-        <p>
-            {{ form.location.label }}<br>
-            {{ form.location(size=64) }}<br>
+        {{ wtf.form_field(form.location) }}
 
-            {% for error in form.location.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        {% for error in form.location.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
 
 
-        <p>
-            {{ form.capacity.label }}<br>
-            {{ form.capacity(size=10) }}<br>
+        {{ wtf.form_field(form.capacity) }}
 
-            {% for error in form.capacity.errors %}}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        {% for error in form.capacity.errors %}}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
 
-        <p>{{ form.submit() }}</p>
+        {{ wtf.form_field(form.submit) }}
 
     </form>
 {% endblock %}
